@@ -5,20 +5,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.Toast;
+
+import com.example.mvptraining.network.model.Hit;
+import com.example.mvptraining.network.model.ResponseListRecipes;
 
 import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableSingleObserver;
-import io.reactivex.schedulers.Schedulers;
-
-public class MainActivity extends AppCompatActivity {
-
-    private static final String TAG = "MainActivity";
+public class MainActivity extends AppCompatActivity implements MainContract.MainView, OnItemClickListener {
 
     private AdapterMainActivity adapterMainActivity;
     RecyclerView recyclerView;
+    MainContract.Presenter presenter;
+    Interactor interactor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,33 +25,33 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         init();
-        fetchRecipeFood();
     }
 
     private void init() {
-        adapterMainActivity = new AdapterMainActivity();
+        adapterMainActivity = new AdapterMainActivity(this);
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapterMainActivity);
+
+        interactor = new Interactor();
+        presenter = new MainPresenter(this, interactor);
+        presenter.requestDataFromServer();
     }
 
-    private void fetchRecipeFood() {
-        RetrofitClient.getRecipeFoodApi().getRecipes()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<ResponseListRecipes>() {
-                    @Override
-                    public void onSuccess(ResponseListRecipes responseListRecipes) {
-                        List<Hit> hits = responseListRecipes.getmHits();
-                        adapterMainActivity.setRecipes(hits);
-                        Log.d(TAG, hits.size()+"======");
-                    }
+    @Override
+    public void setDataToRecyclerView(ResponseListRecipes responseListRecipes) {
+        List<Hit> hits = responseListRecipes.getmHits();
+        adapterMainActivity.setRecipes(hits);
+    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, e.getMessage());
-                    }
-                });
+    @Override
+    public void onResponseFailure(Throwable e) {
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onItemClick(String source) {
+        Toast.makeText(this, source, Toast.LENGTH_LONG).show();
     }
 }

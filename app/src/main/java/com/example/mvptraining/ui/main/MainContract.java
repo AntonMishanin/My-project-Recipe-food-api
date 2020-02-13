@@ -1,6 +1,7 @@
-package com.example.mvptraining;
+package com.example.mvptraining.ui.main;
 
-import com.example.mvptraining.network.model.ResponseListRecipes;
+import com.example.mvptraining.data.network.RecipeFoodApi;
+import com.example.mvptraining.data.network.model.ResponseListRecipes;
 
 public interface MainContract {
 
@@ -23,6 +24,6 @@ public interface MainContract {
 
             void onFailure(Throwable e);
         }
-        void fetchRecipeFood(OnFinishListener onFinishListener);
+        void fetchRecipeFood(OnFinishListener onFinishListener, RecipeFoodApi recipeFoodApi);
     }
 }

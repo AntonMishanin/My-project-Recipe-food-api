@@ -1,6 +1,6 @@
-package com.example.mvptraining.network;
+package com.example.mvptraining.data.network;
 
-import com.example.mvptraining.network.model.ResponseListRecipes;
+import com.example.mvptraining.data.network.model.ResponseListRecipes;
 
 import io.reactivex.Single;
 import retrofit2.http.GET;

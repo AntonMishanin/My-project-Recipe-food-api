@@ -1,4 +1,4 @@
-package com.example.mvptraining;
+package com.example.mvptraining.ui.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +9,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mvptraining.network.model.Hit;
-import com.example.mvptraining.network.model.Recipe;
+import com.example.mvptraining.ui.main.OnItemClickListener;
+import com.example.mvptraining.R;
+import com.example.mvptraining.data.network.model.Hit;
+import com.example.mvptraining.data.network.model.Recipe;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

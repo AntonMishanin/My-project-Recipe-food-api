@@ -1,5 +1,5 @@
 
-package com.example.mvptraining.network.model;
+package com.example.mvptraining.data.network.model;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -1,4 +1,4 @@
-package com.example.mvptraining;
+package com.example.mvptraining.ui.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,36 +7,59 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.mvptraining.network.model.Hit;
-import com.example.mvptraining.network.model.ResponseListRecipes;
+import com.example.mvptraining.ui.App;
+import com.example.mvptraining.R;
+import com.example.mvptraining.di.component.AppComponent;
+import com.example.mvptraining.di.component.DaggerActivityComponent;
+import com.example.mvptraining.data.network.RecipeFoodApi;
+import com.example.mvptraining.data.network.model.Hit;
+import com.example.mvptraining.data.network.model.ResponseListRecipes;
+import com.example.mvptraining.di.module.ActivityModule;
+import com.example.mvptraining.ui.adapter.AdapterMainActivity;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class MainActivity extends AppCompatActivity implements MainContract.MainView, OnItemClickListener {
 
-    private AdapterMainActivity adapterMainActivity;
     RecyclerView recyclerView;
+
+    @Inject
+    RecipeFoodApi recipeFoodApi;
+    @Inject
+    AdapterMainActivity adapterMainActivity;
+    @Inject
     MainContract.Presenter presenter;
-    Interactor interactor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initDagger();
         init();
     }
 
     private void init() {
-        adapterMainActivity = new AdapterMainActivity(this);
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapterMainActivity);
 
-        interactor = new Interactor();
-        presenter = new MainPresenter(this, interactor);
         presenter.requestDataFromServer();
+    }
+
+    private void initDagger() {
+        DaggerActivityComponent.builder()
+                .appComponent(getAppComponent())
+                .activityModule(new ActivityModule(this, this))
+                .build()
+                .inject(this);
+    }
+
+    private AppComponent getAppComponent() {
+        return ((App) getApplication()).getAppComponent();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.example.mvptraining;
+package com.example.mvptraining.ui.main;
 
 public interface OnItemClickListener {
     void onItemClick(String source);

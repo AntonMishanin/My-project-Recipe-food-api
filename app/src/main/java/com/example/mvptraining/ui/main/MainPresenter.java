@@ -1,20 +1,23 @@
-package com.example.mvptraining;
+package com.example.mvptraining.ui.main;
 
-import com.example.mvptraining.network.model.ResponseListRecipes;
+import com.example.mvptraining.data.network.RecipeFoodApi;
+import com.example.mvptraining.data.network.model.ResponseListRecipes;
 
 public class MainPresenter implements MainContract.Presenter, MainContract.Interactor.OnFinishListener {
 
     private MainContract.MainView mainView;
     private MainContract.Interactor interactor;
+    private RecipeFoodApi recipeFoodApi;
 
-    public MainPresenter(MainContract.MainView mainView, MainContract.Interactor interactor) {
+    public MainPresenter(MainContract.MainView mainView, MainContract.Interactor interactor, RecipeFoodApi recipeFoodApi) {
         this.mainView = mainView;
         this.interactor = interactor;
+        this.recipeFoodApi = recipeFoodApi;
     }
 
     @Override
     public void requestDataFromServer() {
-        interactor.fetchRecipeFood(this);
+        interactor.fetchRecipeFood(this, recipeFoodApi);
     }
 
     @Override

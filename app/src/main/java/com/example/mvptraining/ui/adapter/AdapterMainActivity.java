@@ -84,7 +84,7 @@ public class AdapterMainActivity extends RecyclerView.Adapter<AdapterMainActivit
                         }
                     }
                     */
-                    onItemClickListener.onItemClick(recipes.get(position).getSource());
+                    onItemClickListener.onItemClick(recipes.get(position).getLabel());
                 }
             });
         }

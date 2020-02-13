@@ -1,6 +1,9 @@
 package com.example.mvptraining.ui;
 
+import android.app.Activity;
 import android.app.Application;
+
+import androidx.fragment.app.Fragment;
 
 import com.example.mvptraining.di.component.AppComponent;
 import com.example.mvptraining.di.component.DaggerAppComponent;
@@ -24,4 +27,5 @@ public class App extends Application {
     public AppComponent getAppComponent() {
         return appComponent;
     }
+
 }

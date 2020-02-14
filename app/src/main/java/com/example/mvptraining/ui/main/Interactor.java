@@ -10,21 +10,39 @@ import io.reactivex.schedulers.Schedulers;
 public class Interactor implements MainContract.Interactor {
 
     @Override
-    public void fetchRecipeFood(final OnFinishListener onFinishListener, RecipeFoodApi recipeFoodApi) {
-        recipeFoodApi.getRecipes()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<ResponseListRecipes>() {
-                    @Override
-                    public void onSuccess(ResponseListRecipes responseListRecipes) {
-                        onFinishListener.onFinished(responseListRecipes);
-                    }
+    public void fetchRecipeFood(final OnFinishListener onFinishListener, RecipeFoodApi recipeFoodApi, String requestFood, String diet) {
 
-                    @Override
-                    public void onError(Throwable e) {
-                        onFinishListener.onFailure(e);
-                    }
-                });
+        if (diet == null) {
+            recipeFoodApi.getRecipes(requestFood)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableSingleObserver<ResponseListRecipes>() {
+                        @Override
+                        public void onSuccess(ResponseListRecipes responseListRecipes) {
+                            onFinishListener.onFinished(responseListRecipes);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            onFinishListener.onFailure(e);
+                        }
+                    });
+        }else{
+            recipeFoodApi.getRecipesWithDiet(requestFood, diet)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableSingleObserver<ResponseListRecipes>() {
+                        @Override
+                        public void onSuccess(ResponseListRecipes responseListRecipes) {
+                            onFinishListener.onFinished(responseListRecipes);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            onFinishListener.onFailure(e);
+                        }
+                    });
+        }
 
     }
 }

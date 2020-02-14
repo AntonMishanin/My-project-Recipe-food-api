@@ -6,7 +6,7 @@ import com.example.mvptraining.data.network.model.ResponseListRecipes;
 public interface MainContract {
 
     interface Presenter {
-        void requestDataFromServer();
+        void requestDataFromServer(String requestFood, String diet);
     }
 
     interface MainView {
@@ -24,6 +24,6 @@ public interface MainContract {
 
             void onFailure(Throwable e);
         }
-        void fetchRecipeFood(OnFinishListener onFinishListener, RecipeFoodApi recipeFoodApi);
+        void fetchRecipeFood(OnFinishListener onFinishListener, RecipeFoodApi recipeFoodApi, String requestFood, String diet);
     }
 }

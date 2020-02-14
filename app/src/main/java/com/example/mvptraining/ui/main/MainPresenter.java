@@ -16,8 +16,8 @@ public class MainPresenter implements MainContract.Presenter, MainContract.Inter
     }
 
     @Override
-    public void requestDataFromServer() {
-        interactor.fetchRecipeFood(this, recipeFoodApi);
+    public void requestDataFromServer(String requestFood, String diet) {
+        interactor.fetchRecipeFood(this, recipeFoodApi, requestFood, diet);
     }
 
     @Override

@@ -1,11 +1,14 @@
 package com.example.mvptraining.ui;
 
-import android.content.Intent;
+import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,19 +42,30 @@ public class RecipesListFragment extends Fragment implements OnItemClickListener
     @Inject
     MainContract.Presenter presenter;
 
+    private String diet;
+    private View view;
+    private ProgressDialog progressDialog;
+
+    public RecipesListFragment(String diet) {
+        this.diet = diet;
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_recipes_list, container, false);
+        view = inflater.inflate(R.layout.fragment_recipes_list, container, false);
+
 
         initDagger();
+        showProgressDialog();
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapterMainActivity);
 
-        presenter.requestDataFromServer();
+        String defaultRequestFood = "meat";
+        presenter.requestDataFromServer(defaultRequestFood, diet);
         return view;
     }
 
@@ -68,29 +82,54 @@ public class RecipesListFragment extends Fragment implements OnItemClickListener
     }
 
     @Override
-    public void onItemClick(String source) {
-        showDetails(source);
+    public void onItemClick(String source, String imageUrl) {
+        showDetails(source, imageUrl);
     }
 
-    private void showDetails(String source) {
-        RecipeDetailsFragment recipeDetailsFragment = new RecipeDetailsFragment();
+    private void showDetails(String source, String imageUrl) {
+        RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
         Bundle bundle = new Bundle();
         bundle.putString("source", source);
-        recipeDetailsFragment.setArguments(bundle);
+        bundle.putString("imageUrl", imageUrl);
+        recipeDetailFragment.setArguments(bundle);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout_container, recipeDetailsFragment);
-        fragmentTransaction.commit();
+        fragmentTransaction.replace(R.id.frame_layout_container, recipeDetailFragment);
+        fragmentTransaction.addToBackStack(null).commit();
     }
 
     @Override
     public void setDataToRecyclerView(ResponseListRecipes responseListRecipes) {
         List<Hit> hits = responseListRecipes.getmHits();
         adapterMainActivity.setRecipes(hits);
+
+        hideProgressDialog();
     }
 
     @Override
     public void onResponseFailure(Throwable e) {
-        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+        TextView textView = view.findViewById(R.id.text_no_signal);
+        ImageView imageView = view.findViewById(R.id.image_no_signal);
+
+        textView.setVisibility(View.VISIBLE);
+        textView.setText(e.getMessage());
+        imageView.setVisibility(View.VISIBLE);
+
+        hideProgressDialog();
+    }
+
+    private void showProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setCancelable(true);
+        }
+        progressDialog.show();
+    }
+
+    private void hideProgressDialog(){
+        if(progressDialog !=null && progressDialog.isShowing()){
+            progressDialog.cancel();
+        }
     }
 }

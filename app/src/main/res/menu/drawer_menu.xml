@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/balanced"
+        android:icon="@drawable/ic_chevron_right"
+        android:title="Balanced" />
+
+    <item
+        android:id="@+id/high_protein"
+        android:icon="@drawable/ic_chevron_right"
+        android:title="High-protein" />
+
+    <item
+        android:id="@+id/high_fiber"
+        android:icon="@drawable/ic_chevron_right"
+        android:title="High-fiber" />
+
+    <item
+        android:id="@+id/low_fat"
+        android:icon="@drawable/ic_chevron_right"
+        android:title="Low-fat" />
+
+    <item
+        android:id="@+id/low_carb"
+        android:icon="@drawable/ic_chevron_right"
+        android:title="Low-carb" />
+
+    <item
+        android:id="@+id/low_sodium"
+        android:icon="@drawable/ic_chevron_right"
+        android:title="Low-sodium" />
+
+    <item
+        android:icon="@drawable/ic_restaurant_menu"
+        android:title="The type of meal:">
+        <menu>
+            <item android:title="breakfast" />
+            <item android:title="lunch" />
+            <item android:title="dinner" />
+            <item android:title="snack" />
+        </menu>
+    </item>
+</menu>

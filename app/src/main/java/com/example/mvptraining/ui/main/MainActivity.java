@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FragmentTransaction fragmentTransaction;
     DrawerLayout drawerLayout;
     FragmentManager fragmentManager;
-    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
     }
 
     @Override
